@@ -1,5 +1,5 @@
 /// image8bit - A simple image processing module.
-/// erinfjeriuinerghiergneuigueuer
+/// 
 /// This module is part of a programming project
 /// for the course AED, DETI / UA.PT
 ///
@@ -34,6 +34,7 @@
 // level of each pixel in the image.  The pixel array is one-dimensional
 // and corresponds to a "raster scan" of the image from left to right,
 // top to bottom.
+
 // For example, in a 100-pixel wide image (img->width == 100),
 //   pixel position (x,y) = (33,0) is stored in img->pixel[33];
 //   pixel position (x,y) = (22,1) is stored in img->pixel[122].
@@ -172,6 +173,23 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
   assert (height >= 0);
   assert (0 < maxval && maxval <= PixMax);
   // Insert your code here!
+
+  Image* imagem = (Image*)malloc(sizeof(Image));
+  if (imagem == NULL)
+  {
+    //ENOMEM é uma constante em c que representa um erro de falta de memória
+    errno = ENOMEM;
+    return NULL;
+  }
+
+  imagem->pixel = (uint8*)malloc(width*height*sizeof(uint8));
+  //Implementação dos atributos da image
+  imagem->width = width;
+  imagem->height = height;
+  imagem->maxval = maxval;
+
+  return imagem;
+
 }
 
 /// Destroy the image pointed to by (*imgp).
@@ -182,6 +200,8 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
 void ImageDestroy(Image* imgp) { ///
   assert (imgp != NULL);
   // Insert your code here!
+
+  free(imgp);
 }
 
 
