@@ -1,5 +1,5 @@
 /// image8bit - A simple image processing module.
-///
+/// erinfjeriuinerghiergneuigueuer
 /// This module is part of a programming project
 /// for the course AED, DETI / UA.PT
 ///
