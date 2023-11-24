@@ -309,11 +309,24 @@ int ImageMaxval(Image img) { ///
 /// Pixel stats
 /// Find the minimum and maximum gray levels in image.
 /// On return,
-/// *min is set to the minimum gray level in the image,
+/// *min is set to the minimum gray level in the image (black),
 /// *max is set to the maximum.
 void ImageStats(Image img, uint8* min, uint8* max) { ///
-  assert (img != NULL);
+  assert (img != NULL && min != NULL && max != NULL);
+  
   // Insert your code here!
+  for (int i=0; i < (img->height*img->width); i++)
+  {
+    if (img->pixel[i] < *min)
+    {
+      *min = img->pixel[i]; 
+    }
+    if (img->pixel[i] > *max)
+    {
+      *max = img->pixel[i];
+    }
+  }
+
 }
 
 /// Check if pixel position (x,y) is inside img.
@@ -339,7 +352,10 @@ int ImageValidRect(Image img, int x, int y, int w, int h) { ///
 // This internal function is used in ImageGetPixel / ImageSetPixel. 
 // The returned index must satisfy (0 <= index < img->width*img->height)
 static inline int G(Image img, int x, int y) {
+  assert(ImageValidPos(img, x, y)); //xE[0,width[ e yE[0, heigth[
+
   int index;
+  index = y*img->width + x; //array linear com os indices dos pixels
   // Insert your code here!
   assert (0 <= index && index < img->width*img->height);
   return index;
@@ -349,7 +365,9 @@ static inline int G(Image img, int x, int y) {
 uint8 ImageGetPixel(Image img, int x, int y) { ///
   assert (img != NULL);
   assert (ImageValidPos(img, x, y));
+
   PIXMEM += 1;  // count one pixel access (read)
+
   return img->pixel[G(img, x, y)];
 } 
 
@@ -357,6 +375,7 @@ uint8 ImageGetPixel(Image img, int x, int y) { ///
 void ImageSetPixel(Image img, int x, int y, uint8 level) { ///
   assert (img != NULL);
   assert (ImageValidPos(img, x, y));
+
   PIXMEM += 1;  // count one pixel access (store)
   img->pixel[G(img, x, y)] = level;
 } 
@@ -376,6 +395,18 @@ void ImageSetPixel(Image img, int x, int y, uint8 level) { ///
 void ImageNegative(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+  int i;
+  for (i = 0; i < img->width*img->height; i++)  //Iterates through all pixels
+  {
+    if (img->pixel[i] < (img->maxval)/2)
+    {
+      img->pixel[i] = img->maxval - img->pixel[i];
+    }
+    else if (img->pixel[i] > (img->maxval)/2)
+    {
+      img->pixel[i] = img->maxval - img->pixel[i];
+    }
+  }
 }
 
 /// Apply threshold to image.
@@ -384,6 +415,18 @@ void ImageNegative(Image img) { ///
 void ImageThreshold(Image img, uint8 thr) { ///
   assert (img != NULL);
   // Insert your code here!
+  int i;
+  for (i=0 ; i < img->height*img->width; i++)
+  {
+    if (img->pixel[i] < thr)
+    {
+      img->pixel[i] = 0;
+    }
+    else
+    {
+      img->pixel[i] = img->maxval;
+    }
+  }
 }
 
 /// Brighten image by a factor.
@@ -392,8 +435,22 @@ void ImageThreshold(Image img, uint8 thr) { ///
 /// darken the image if factor<1.0.
 void ImageBrighten(Image img, double factor) { ///
   assert (img != NULL);
-  // ? assert (factor >= 0.0);
+  assert (factor >= 0.0);
+
   // Insert your code here!
+  int i;
+  for (i=0; i < img->width*img->height; i++)
+  {
+    if (img->pixel[i]*factor > img->maxval)
+    {
+      img->pixel[i] = img->maxval;
+      
+    }
+    else 
+    {
+      img->pixel[i] *= factor; 
+    }
+  }
 }
 
 
