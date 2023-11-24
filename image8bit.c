@@ -339,6 +339,13 @@ int ImageValidPos(Image img, int x, int y) { ///
 int ImageValidRect(Image img, int x, int y, int w, int h) { ///
   assert (img != NULL);
   // Insert your code here!
+  assert(ImageValidPos(img, x, y) == 1);
+
+  if ((x+w) <= img->width && (y+h) <= img->width) 
+  {
+    return 1;
+  }
+  else{return 0;}
 }
 
 /// Pixel get & set operations
@@ -478,6 +485,26 @@ void ImageBrighten(Image img, double factor) { ///
 Image ImageRotate(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+
+  Image newimg = ImageCreate(img->width, img->height, img->maxval);
+  if (newimg == NULL)
+  {
+    errCause = "Falha na alocação de memória ";
+    return NULL;
+  }
+
+  for (int i = 0; i < img->height; i++)
+  {
+    for (int j = 0; i < img->width; j++)
+    {
+      int newX = i;                   //Troca de x por y
+      int newY = img->width - 1 - j;  //Reflexão pelo eixo x
+    
+      ImageSetPixel(newimg, newX, newY, ImageGetPixel(img, x, y));
+    }
+  }
+
+  return newimg;
 }
 
 /// Mirror an image = flip left-right.
