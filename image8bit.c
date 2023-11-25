@@ -175,7 +175,7 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
   assert (0 < maxval && maxval <= PixMax);
   // Insert your code here!
 
-Image img = (Image*)malloc(sizeof(Image));
+Image img = (Image)malloc(sizeof(Image));
   if (img == NULL)
   {
     //ENOMEM é uma constante em c que representa um erro de falta de memória
@@ -507,10 +507,15 @@ Image ImageMirror(Image img) { ///
     return NULL;
   }
 
-  int i;
+  int i, w;
+  w = img->width;
   for (i = 0; i < img->width*img->width; i++)
   {
-
+    if ((i+1)%w == 0)  //Cada vez que chega ao fim de uma linha do array pixel 
+    {
+      w += w;  
+    }
+    imgMirr->pixel[i] = img->pixel[w - i];
   }
 }
 
