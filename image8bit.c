@@ -517,6 +517,11 @@ Image ImageRotate(Image img) { ///
 Image ImageMirror(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+  int i, j;
+  for (i = 0; i < img->height; i++)
+  {
+    for 
+  }
 }
 
 /// Crop a rectangular subimage from img.
