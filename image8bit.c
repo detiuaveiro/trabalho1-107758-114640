@@ -175,10 +175,11 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
   assert (0 < maxval && maxval <= PixMax);
   // Insert your code here!
 
-Image img = (Image)malloc(sizeof(Image));
+Image img = (Image)malloc(sizeof(struct image));
   if (img == NULL)
   {
     //ENOMEM é uma constante em c que representa um erro de falta de memória
+    free(img);
     errno = ENOMEM;
     return NULL;
   }
@@ -202,7 +203,7 @@ void ImageDestroy(Image* imgp) { ///
   assert (imgp != NULL);
   // Insert your code here!
 
-  free(imgp);
+  free(*imgp);
 }
 
 
@@ -509,15 +510,14 @@ Image ImageMirror(Image img) { ///
 
   int i, w;
   w = img->width;
-  for (i = 0; i < img->width*img->width; i++)
+  for (i = 0; i < img->height*img->width; i++)
   {
-    if ((i+1)%w == 0)  //Cada vez que chega ao fim de uma linha do array pixel 
+    if (i%img->width == 0)
     {
-      w += w;  
+      w += w;
     }
-    imgMirr->pixel[i] = img->pixel[w - i];
+    imgMirr->pixel[i] = img->pixel[w-i%img->width-1];
   }
-}
 
 /// Crop a rectangular subimage from img.
 /// The rectangle is specified by the top left corner coords (x, y) and
