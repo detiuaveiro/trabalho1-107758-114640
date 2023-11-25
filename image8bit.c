@@ -23,6 +23,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include "instrumentation.h"
 
@@ -174,21 +175,21 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
   assert (0 < maxval && maxval <= PixMax);
   // Insert your code here!
 
-  Image* imagem = (Image*)malloc(sizeof(Image));
-  if (imagem == NULL)
+Image img = (Image*)malloc(sizeof(Image));
+  if (img == NULL)
   {
     //ENOMEM é uma constante em c que representa um erro de falta de memória
     errno = ENOMEM;
     return NULL;
   }
-
-  imagem->pixel = (uint8*)malloc(width*height*sizeof(uint8));
+  
+  img->pixel = (uint8*)malloc(width*height*sizeof(uint8));
   //Implementação dos atributos da image
-  imagem->width = width;
-  imagem->height = height;
-  imagem->maxval = maxval;
+  img->width = width;
+  img->height = height;
+  img->maxval = maxval;
 
-  return imagem;
+  return img;
 
 }
 
@@ -486,25 +487,6 @@ Image ImageRotate(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
 
-  Image newimg = ImageCreate(img->width, img->height, img->maxval);
-  if (newimg == NULL)
-  {
-    errCause = "Falha na alocação de memória ";
-    return NULL;
-  }
-
-  for (int i = 0; i < img->height; i++)
-  {
-    for (int j = 0; i < img->width; j++)
-    {
-      int newX = i;                   //Troca de x por y
-      int newY = img->width - 1 - j;  //Reflexão pelo eixo x
-    
-      ImageSetPixel(newimg, newX, newY, ImageGetPixel(img, x, y));
-    }
-  }
-
-  return newimg;
 }
 
 /// Mirror an image = flip left-right.
@@ -517,10 +499,18 @@ Image ImageRotate(Image img) { ///
 Image ImageMirror(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
-  int i, j;
-  for (i = 0; i < img->height; i++)
+
+  Image imgMirr = ImageCreate(img->width, img->height, img->maxval);
+  if (imgMirr == NULL)
   {
-    for 
+    errno = ENOMEM;
+    return NULL;
+  }
+
+  int i;
+  for (i = 0; i < img->width*img->width; i++)
+  {
+
   }
 }
 
