@@ -203,9 +203,9 @@ void ImageDestroy(Image* imgp) { ///
   assert (imgp != NULL);
   // Insert your code here!
 
-  free(imgp-<pixel);
-  free(imgp);
+  free(*imgp);
   *imgp = NULL;
+
 }
 
 
