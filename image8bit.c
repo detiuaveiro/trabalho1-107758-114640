@@ -203,12 +203,8 @@ void ImageDestroy(Image* imgp) { ///
   assert (imgp != NULL);
   // Insert your code here!
 
-<<<<<<< HEAD
-  free(imgp);
-=======
   free(*imgp);
   *imgp = NULL;
->>>>>>> 1bd5ab4 (fix imageDestroy)
 }
 
 
