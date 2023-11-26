@@ -539,6 +539,7 @@ Image ImageMirror(Image img) { ///
       ImageSetPixel(imgMirr, newX, y, ImageGetPixel(img, x, y));
     }
   }
+  return imgMirr;
 }
 
 /// Crop a rectangular subimage from img.
