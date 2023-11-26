@@ -11,10 +11,10 @@
 
 // Student authors (fill in below):
 // NMec:  107758    Name: Gonçalo Gomes Monteiro
-// NMec:  114640    Name:
+// NMec:  114640    Name: Filipe Oliveira
 // 
 // 
-// Date:
+// Date:  26/11/2023
 //
 
 #include "image8bit.h"
