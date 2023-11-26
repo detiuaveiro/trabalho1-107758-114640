@@ -608,7 +608,7 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha) { ///
   // Insert your code here!
   assert(0.0 <= alpha && alpha <= 1);
 
-  int i, j;
+  /*int i, j;
   for (i = y; i < img2->height+y; i++)
   {
     for (j = x; j < img2->width+x; j++)
@@ -619,7 +619,7 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha) { ///
       uint8 blendPixel = (uint8)((alpha*img2px) + (1-alpha)*(img1px));
       ImageSetPixel(img1, j, i, blendPixel);
     }
-  }
+  }*/
 }
 
 /// Compare an image to a subimage of a larger image.
