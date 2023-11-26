@@ -487,6 +487,7 @@ void ImageBrighten(Image img, double factor) { ///
 Image ImageRotate(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+<<<<<<< HEAD
   Image imgRot = ImageCreate(img->height, img->width, img->maxval);
   if (imgRot == NULL)
   {
@@ -494,6 +495,14 @@ Image ImageRotate(Image img) { ///
     errno = ENOMEM;
     return NULL;
   }
+=======
+  Image rotate = ImageCreate(img->height, img->width, img -> maxval); /// criação de uma imagem com os valores opostos
+  if (rotate == NULL){
+    return NULL;
+  }
+
+
+>>>>>>> de921bc (ImageCrop)
 
   int x, y;
   for (y = 0; y < imgRot->height; y++)
@@ -555,6 +564,21 @@ Image ImageCrop(Image img, int x, int y, int w, int h) { ///
   assert (img != NULL);
   assert (ImageValidRect(img, x, y, w, h));
   // Insert your code here!
+  Image croppedimg = ImageCreate(w, h, img->maxval);
+  if (croppedimg == NULL){
+    free(croppedimg);
+    errno = ENOMEM;
+    return NULL;
+  }
+  for (int i = 0; i<w; i++){
+    for (int j = 0; j<h; j++){
+      uint8 pixel = ImageGetPixel(img, x+i, y+j); /// copiar cada pixel da imagem original
+      ImageSetPixel(croppedimg, i, j, pixel); /// criação da imagem cropped
+    }
+  }
+  return croppedimg;
+
+
 }
 
 
