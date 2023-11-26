@@ -658,9 +658,11 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
       {
         *px = j;
         *py = i;
+        return 1;
       }
     }
   }
+  return 0;
 }
 
 
