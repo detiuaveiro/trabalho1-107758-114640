@@ -606,26 +606,17 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha) { ///
   assert (img2 != NULL);
   assert (ImageValidRect(img1, x, y, img2->width, img2->height));
   // Insert your code here!
+  assert(0.0 <= alpha && alpha <= 1);
 
   int i, j;
-  for (i = 0; i < img2->height; i++)
+  for (i = y; i < img2->height+y; i++)
   {
-    for (j = 0; j < img2->width; j++)
+    for (j = x; j < img2->width+x; j++)
     {
-      int newX = x + j;
-      int newY = y + i;
-
-      if (ImageValidPos(img1, newX, newY))
-      {
-        int idx1 = G(img1, newX, newY);
-        int idx2 = G(img2, j, i);
-
-        double blend = alpha*img1->pixel[idx1] + (1-alpha)*img2->pixel[idx2];
-
-        blend = (blend > PixMax) ? PixMax : ((blend < 0) ? 0 : blend);
-        img1->pixel[idx1] = (uint8)blend; // Conversão de double para uint8
-      }
-    } 
+      //Cálculo do novo valor do pixel na posição (j, i)
+      uint8 blendPixel = (uint8)(alpha*(ImageGetPixel(img2, j, i) + (1-alpha)*(ImageGetPixel(img1, j, i))));
+      ImageSetPixel(img1, j, i, blendPixel);
+    }
   }
 }
 
