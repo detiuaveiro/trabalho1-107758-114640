@@ -459,7 +459,7 @@ void ImageBrighten(Image img, double factor) { ///
     }
     else 
     {
-      img->pixel[i] *= factor; 
+      img->pixel[i] = (uint8)(img->pixel[i]*factor); 
     }
   }
 }
