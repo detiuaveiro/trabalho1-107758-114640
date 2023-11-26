@@ -26,7 +26,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "instrumentation.h"
-#include <math.h>
 
 // The data structure
 //
@@ -453,7 +452,15 @@ void ImageBrighten(Image img, double factor) { ///
   int i;
   for (i=0; i < img->width*img->height; i++)
   {
-    img->pixel[i] = (uint8)fmin((double)img->maxval, (double)img->pixel[i]*factor);
+    if (img->pixel[i]*factor > img->maxval)
+    {
+      img->pixel[i] = (uint8)(img->maxval);
+      
+    }
+    else 
+    {
+      img->pixel[i] = (uint8)(img->pixel[i]*factor); 
+    }
   }
 }
 
