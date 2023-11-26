@@ -487,7 +487,6 @@ void ImageBrighten(Image img, double factor) { ///
 Image ImageRotate(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
-<<<<<<< HEAD
   Image imgRot = ImageCreate(img->height, img->width, img->maxval);
   if (imgRot == NULL)
   {
@@ -495,14 +494,6 @@ Image ImageRotate(Image img) { ///
     errno = ENOMEM;
     return NULL;
   }
-=======
-  Image rotate = ImageCreate(img->height, img->width, img -> maxval); /// criação de uma imagem com os valores opostos
-  if (rotate == NULL){
-    return NULL;
-  }
-
-
->>>>>>> de921bc (ImageCrop)
 
   int x, y;
   for (y = 0; y < imgRot->height; y++)
