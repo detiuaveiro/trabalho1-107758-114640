@@ -343,7 +343,7 @@ int ImageValidRect(Image img, int x, int y, int w, int h) { ///
   // Insert your code here!
   assert(ImageValidPos(img, x, y) == 1);
 
-  if ((x+w) <= img->width && (y+h) <= img->width) 
+  if ((x+w) <= img->width && (y+h) <= img->height) 
   {
     return 1;
   }
@@ -487,7 +487,25 @@ void ImageBrighten(Image img, double factor) { ///
 Image ImageRotate(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+  Image imgRot = ImageCreate(img->height, img->width, img->maxval);
+  if (imgRot == NULL)
+  {
+    ImageDestroy(imgRot);
+    errno = ENOMEM;
+    return NULL;
+  }
 
+  int x, y;
+  for (y = 0; y < imgRot->height; y++)
+  {
+    for (x = 0; x < imgRot->width; x++)
+    {
+      int newX = y;
+      int newY = imgRot->width-x-1;
+
+      ImageSetPixel(imgRot, newX, newY, ImageGetPixel(img, x, y));
+    }
+  }
 }
 
 /// Mirror an image = flip left-right.
@@ -504,20 +522,22 @@ Image ImageMirror(Image img) { ///
   Image imgMirr = ImageCreate(img->width, img->height, img->maxval);
   if (imgMirr == NULL)
   {
+    ImageDestroy(imgMirr);
     errno = ENOMEM;
     return NULL;
   }
 
-  int i, w;
-  w = img->width;
-  for (i = 0; i < img->height*img->width; i++)
+  int x, y; //Coordenadas dos pixels
+  for (y = 0; y < img->height; y++)
   {
-    if (i%img->width == 0)
+    for (x = 0; x < img->width; x++)
     {
-      w += w;
+      //A coordenada de y é igual, apenas se altera a coordenada do x
+      int newX = img->width - x -1;
+      ImageSetPixel(imgMirr, newX, y, ImageGetPixel(img, x, y));
     }
-    imgMirr->pixel[i] = img->pixel[w-i%img->width-1];
   }
+}
 
 /// Crop a rectangular subimage from img.
 /// The rectangle is specified by the top left corner coords (x, y) and
@@ -562,6 +582,27 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha) { ///
   assert (img2 != NULL);
   assert (ImageValidRect(img1, x, y, img2->width, img2->height));
   // Insert your code here!
+
+  int i, j;
+  for (i = 0; i < img2->height; i++)
+  {
+    for (j = 0; j < img2->width; j++)
+    {
+      int newX = x + j;
+      int newY = y + i;
+
+      if (ImageValidPos(img1, newX, newY))
+      {
+        int idx1 = G(img1, newX, newY);
+        int idx2 = G(img2, j, i);
+
+        double blend = alpha*img1->pixel[idx1] + (1-alpha)*img2->pixel[idx2];
+
+        blend = (blend > PixMax) ? PixMax : ((blend < 0) ? 0 : blend);
+        img1->pixel[idx1] = (uint8)blend; // Conversão de double para uint8
+      }
+    } 
+  }
 }
 
 /// Compare an image to a subimage of a larger image.
