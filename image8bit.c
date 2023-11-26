@@ -453,7 +453,7 @@ void ImageBrighten(Image img, double factor) { ///
   int i;
   for (i=0; i < img->width*img->height; i++)
   {
-    img->pixel[i] = (uint8)fmin(img->maxval, img->pixel[i]*factor);
+    img->pixel[i] = (uint8)fmin((double)img->maxval, (double)img->pixel[i]*factor);
   }
 }
 
