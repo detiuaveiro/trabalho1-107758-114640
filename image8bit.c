@@ -203,7 +203,12 @@ void ImageDestroy(Image* imgp) { ///
   assert (imgp != NULL);
   // Insert your code here!
 
+<<<<<<< HEAD
   free(imgp);
+=======
+  free(*imgp);
+  *imgp = NULL;
+>>>>>>> 1bd5ab4 (fix imageDestroy)
 }
 
 
@@ -490,7 +495,7 @@ Image ImageRotate(Image img) { ///
   Image imgRot = ImageCreate(img->height, img->width, img->maxval);
   if (imgRot == NULL)
   {
-    ImageDestroy(imgRot);
+    ImageDestroy(&imgRot);
     errno = ENOMEM;
     return NULL;
   }
@@ -524,7 +529,7 @@ Image ImageMirror(Image img) { ///
   Image imgMirr = ImageCreate(img->width, img->height, img->maxval);
   if (imgMirr == NULL)
   {
-    ImageDestroy(imgMirr);
+    ImageDestroy(&imgMirr);
     errno = ENOMEM;
     return NULL;
   }
