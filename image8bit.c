@@ -203,7 +203,7 @@ void ImageDestroy(Image* imgp) { ///
   assert (imgp != NULL);
   // Insert your code here!
 
-  free(*imgp);
+  free(imgp);
 }
 
 
@@ -506,6 +506,8 @@ Image ImageRotate(Image img) { ///
       ImageSetPixel(imgRot, newX, newY, ImageGetPixel(img, x, y));
     }
   }
+
+  return imgRot;
 }
 
 /// Mirror an image = flip left-right.
