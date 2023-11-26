@@ -26,6 +26,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "instrumentation.h"
+#include <string.h>
 
 // The data structure
 //
@@ -676,7 +677,51 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
 /// Each pixel is substituted by the mean of the pixels in the rectangle
 /// [x-dx, x+dx]x[y-dy, y+dy].
 /// The image is changed in-place.
-void ImageBlur(Image img, int dx, int dy) { ///
-  // Insert your code here!
-}
+void ImageBlur(Image img, int dx, int dy) {
+    assert(img != NULL);
+    assert(dx >= 0 && dy >= 0);
 
+    int w = img->width;
+    int h = img->height;
+    uint8_t* tempPixels = (uint8_t*)malloc(w * h * sizeof(uint8_t));
+
+    
+    if (tempPixels == NULL) {
+        errno = ENOMEM; 
+       
+        return; 
+    }
+
+    
+    memcpy(tempPixels, img->pixel, w * h * sizeof(uint8_t));
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            long sum = 0;
+            int count = 0;
+
+            
+            for (int ny = -dy; ny <= dy; ++ny) {
+                for (int nx = -dx; nx <= dx; ++nx) {
+                    int newX = x + nx;
+                    int newY = y + ny;
+
+                    
+                    if (newX >= 0 && newX < w && newY >= 0 && newY < h) {
+                        sum += tempPixels[newY * w + newX]; 
+                        count++;
+                    }
+                }
+            }
+
+            
+            uint8_t meanValue = (uint8_t)((sum + count / 2) / count);
+
+            
+            img->pixel[y * w + x] = meanValue;
+        }
+    }
+
+    
+    free(tempPixels);
+}
