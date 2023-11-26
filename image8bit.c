@@ -10,11 +10,11 @@
 /// 2013, 2023
 
 // Student authors (fill in below):
-// NMec:  107758    Name: Gonçalo Gomes Monteiro
-// NMec:  114640    Name: Filipe Oliveira
+// NMec:  Name:
 // 
 // 
-// Date:  26/11/2023
+// 
+// Date:
 //
 
 #include "image8bit.h"
@@ -408,7 +408,7 @@ void ImageNegative(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
   int i;
-  for (i = 0; i < img->width*img->height; i++)  //Iterates through all pixels
+  for (i = 0; i < img->width*img->height; i++)  
   {
     if (img->pixel[i] < (img->maxval)/2)
     {
@@ -659,7 +659,7 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
   {
     for (j = 0; j < img1->width; j++)
     {
-      if (ImageMatchSubImage(img1, j, i, img2))
+      if (ImageMatchSubImage(img1, j, i, img2)== 1)
       {
         *px = j;
         *py = i;
