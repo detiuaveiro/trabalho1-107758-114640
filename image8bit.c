@@ -26,6 +26,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "instrumentation.h"
+#include <math.h>
 
 // The data structure
 //
