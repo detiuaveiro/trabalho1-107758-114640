@@ -685,22 +685,23 @@ void ImageBlur(Image img, int dx, int dy) {
     int h = img->height;
     uint8_t* tempPixels = (uint8_t*)malloc(w * h * sizeof(uint8_t));
 
-    
     if (tempPixels == NULL) {
-        errno = ENOMEM; 
-       
-        return; 
+        errno = ENOMEM;
+        return;
     }
 
-    
-    memcpy(tempPixels, img->pixel, w * h * sizeof(uint8_t));
+  
+    for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w; x++) {
+            tempPixels[y * w + x] = ImageGetPixel(img, x, y);
+        }
+    }
 
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
             long sum = 0;
             int count = 0;
 
-            
             for (int ny = -dy; ny <= dy; ++ny) {
                 for (int nx = -dx; nx <= dx; ++nx) {
                     int newX = x + nx;
@@ -708,20 +709,19 @@ void ImageBlur(Image img, int dx, int dy) {
 
                     
                     if (newX >= 0 && newX < w && newY >= 0 && newY < h) {
-                        sum += tempPixels[newY * w + newX]; 
+                        sum += tempPixels[newY * w + newX];
                         count++;
                     }
                 }
             }
 
-            
-            uint8_t meanValue = (uint8_t)((sum + count / 2) / count);
+           
+            uint8_t meanValue = count > 0 ? (uint8_t)((sum + count / 2) / count) : 0;
 
-            
-            img->pixel[y * w + x] = meanValue;
+           
+            ImageSetPixel(img, x, y, meanValue);
         }
     }
 
-    
     free(tempPixels);
 }

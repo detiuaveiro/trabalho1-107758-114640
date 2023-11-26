@@ -40,14 +40,17 @@ int main(int argc, char* argv[]) {
 
   //img2 = ImageCrop(img1, ImageWidth(img1)/4, ImageHeight(img1)/4, ImageWidth(img1)/2, ImageHeight(img1)/2);
   //Image img2 = ImageRotate(img1);
-  ImagePaste(img1, ImageWidth(img1)/2,ImageHeight(img1)/2, img2);
+  
   if (img2 == NULL) {
     error(2, errno, "Rotating img2: %s", ImageErrMsg());
   }
-  int x, y;
-  InstrReset();
-  ImageLocateSubImage(img1,&x,&y , img2);
-  InstrPrint();
+ 
+InstrReset();
+ImageBlur(img1, 1, 6);
+InstrPrint();
+InstrReset();
+ImageBlur(img2, 6, 9);
+InstrPrint();
   
   //ImageNegative(img2);
   //ImageThreshold(img2, 100);
